@@ -1,0 +1,36 @@
+service: localstack-demo
+frameworkVersion: '3'
+useDotenv: true
+custom:
+  tableName: 'users-table-${sls:stage}'
+
+plugins:
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  stage: local
+  region: ap-south-1
+
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:PutObject"
+        - "s3:ListBucket"
+        - "s3:GetObject"
+        - "s3:PutObjectAcl"
+      
+functions:
+  api:
+    handler: handler.handler
+    events:
+      - http:
+          method: ANY
+          path: /img
+          cors: true
+
+resources:
+  Resources:
+   ImageUploadBucket: ${file(./s3_conf.yml)}
+   ImageUploadBucketPolicy: ${file(./s3_policy.yml)}

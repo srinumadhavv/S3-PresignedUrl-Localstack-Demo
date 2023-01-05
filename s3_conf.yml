@@ -1,0 +1,18 @@
+Type: AWS::S3::Bucket
+Properties:
+  BucketName: image-upload-122314124${self:provider.stage}
+  AccessControl: PublicRead
+    # Set the CORS policy
+  CorsConfiguration:
+    CorsRules:
+      - AllowedOrigins:
+          - '*'
+        AllowedHeaders:
+          - '*'
+        AllowedMethods:
+          - GET
+          - PUT
+          - POST
+          - DELETE
+          - HEAD
+        MaxAge: 3000
